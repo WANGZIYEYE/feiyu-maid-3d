@@ -3,50 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>肥鱼 · 鲸鱼娘女仆 3D 换装</title>
+<title>肥鱼 · 鲸鱼娘女仆 3D 换装馆</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC","Microsoft YaHei",sans-serif; }
-  body { background:linear-gradient(180deg,#0b1026 0%,#16204a 45%,#274b8f 75%,#3d7dd6 100%); }
+  body { background:linear-gradient(180deg,#0b1026 0%,#16204a 45%,#274b8f 75%,#3d7dd6 100%); transition:background 1s; }
   #scene { position:fixed; inset:0; }
-  #title { position:fixed; top:18px; left:22px; color:#fff; z-index:10; pointer-events:none; text-shadow:0 2px 12px rgba(0,0,0,.5); }
-  #title h1 { font-size:22px; font-weight:700; letter-spacing:2px; }
+  /* 顶栏 */
+  #title { position:fixed; top:16px; left:22px; color:#fff; z-index:10; pointer-events:none; text-shadow:0 2px 12px rgba(0,0,0,.5); }
+  #title h1 { font-size:24px; font-weight:800; letter-spacing:3px; }
   #title h1 .fish { color:#7fd0ff; }
-  #title p { font-size:12px; opacity:.75; margin-top:4px; letter-spacing:1px; }
+  #title p { font-size:12px; opacity:.7; margin-top:5px; letter-spacing:2px; }
+  /* 左：角色档案 */
+  #profile {
+    position:fixed; left:18px; top:110px; width:196px; z-index:10;
+    background:rgba(10,16,38,.66); backdrop-filter:blur(12px);
+    border:1px solid rgba(127,208,255,.25); border-radius:16px; padding:14px 14px 12px;
+    color:#dbeeff; box-shadow:0 8px 32px rgba(0,0,0,.4);
+  }
+  #profile h3 { color:#9fdcff; font-size:13px; letter-spacing:3px; text-align:center; margin-bottom:10px; }
+  #profile .row { display:flex; font-size:12px; margin:6px 0; line-height:1.5; }
+  #profile .k { color:#7fa8d8; width:52px; flex:none; }
+  #profile .v { color:#eaf6ff; }
+  #profile .quote { margin-top:10px; padding-top:8px; border-top:1px dashed rgba(127,208,255,.25);
+    font-size:12px; color:#a9c8ee; font-style:italic; line-height:1.6; }
+  /* 右：控制台 */
   #panel {
-    position:fixed; right:18px; top:50%; transform:translateY(-50%);
+    position:fixed; right:18px; top:50%; transform:translateY(-50%); width:188px; z-index:10;
     background:rgba(10,16,38,.72); backdrop-filter:blur(12px);
-    border:1px solid rgba(127,208,255,.25); border-radius:16px;
-    padding:16px 14px; z-index:10; width:172px;
-    box-shadow:0 8px 32px rgba(0,0,0,.45);
+    border:1px solid rgba(127,208,255,.25); border-radius:16px; padding:14px 12px;
+    box-shadow:0 8px 32px rgba(0,0,0,.45); max-height:92vh; overflow-y:auto;
   }
-  #panel h3 { color:#9fdcff; font-size:13px; margin-bottom:10px; letter-spacing:2px; text-align:center; }
+  #panel h3 { color:#9fdcff; font-size:12px; letter-spacing:3px; text-align:center; margin:10px 0 8px; }
+  #panel h3:first-child { margin-top:0; }
   .outfit-btn {
-    display:block; width:100%; margin:8px 0; padding:10px 0;
-    border:1px solid rgba(127,208,255,.35); border-radius:10px;
-    background:rgba(77,107,254,.15); color:#eaf6ff; font-size:14px; cursor:pointer;
-    transition:all .2s; letter-spacing:1px;
+    display:flex; align-items:center; gap:8px; width:100%; margin:6px 0; padding:9px 10px;
+    border:1px solid rgba(127,208,255,.3); border-radius:10px; cursor:pointer;
+    background:rgba(77,107,254,.12); color:#eaf6ff; font-size:13px; transition:all .2s; text-align:left;
   }
-  .outfit-btn:hover { background:rgba(77,107,254,.4); transform:translateY(-1px); }
-  .outfit-btn.active { background:linear-gradient(135deg,#4d6bfe,#38bdf8); border-color:#9fdcff; font-weight:700; box-shadow:0 0 16px rgba(77,107,254,.6); }
-  .row-btns { display:flex; gap:8px; margin-top:10px; }
+  .outfit-btn:hover { background:rgba(77,107,254,.35); transform:translateY(-1px); }
+  .outfit-btn.active { background:linear-gradient(135deg,#4d6bfe,#38bdf8); border-color:#9fdcff; font-weight:700; box-shadow:0 0 14px rgba(77,107,254,.55); }
+  .outfit-btn .tag { margin-left:auto; font-size:10px; padding:2px 7px; border-radius:20px; background:rgba(255,255,255,.16); flex:none; }
+  .tag.cute { background:rgba(255,150,190,.35); }
+  .tag.cool { background:rgba(150,170,255,.35); }
+  .tag.sexy { background:rgba(200,120,255,.35); }
+  .btn-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
   .mini-btn {
-    flex:1; padding:8px 0; font-size:12px; border-radius:8px; cursor:pointer;
-    border:1px solid rgba(127,208,255,.3); background:rgba(255,255,255,.06); color:#cfe9ff;
-    transition:all .2s;
+    padding:8px 0; font-size:12px; border-radius:8px; cursor:pointer; text-align:center;
+    border:1px solid rgba(127,208,255,.3); background:rgba(255,255,255,.06); color:#cfe9ff; transition:all .2s;
   }
   .mini-btn:hover { background:rgba(255,255,255,.15); }
   .mini-btn.on { background:rgba(56,189,248,.35); border-color:#38bdf8; color:#fff; }
-  #hint {
-    position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
-    color:rgba(255,255,255,.55); font-size:12px; z-index:10; pointer-events:none; letter-spacing:1px;
+  .btn-grid.two { grid-template-columns:1fr 1fr; }
+  #btnPhoto { width:100%; margin-top:6px; padding:9px 0; border-radius:10px; cursor:pointer;
+    border:1px solid rgba(255,215,107,.5); background:rgba(255,200,80,.14); color:#ffe9b0; font-size:13px; letter-spacing:2px; }
+  #btnPhoto:hover { background:rgba(255,200,80,.3); }
+  /* 底部服装介绍 */
+  #caption {
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%); z-index:10;
+    background:rgba(10,16,38,.66); backdrop-filter:blur(10px);
+    border:1px solid rgba(127,208,255,.25); border-radius:14px; padding:10px 22px;
+    color:#eaf6ff; text-align:center; max-width:70vw; box-shadow:0 8px 28px rgba(0,0,0,.4);
   }
+  #caption .name { font-size:15px; font-weight:700; letter-spacing:2px; color:#9fdcff; }
+  #caption .desc { font-size:12px; opacity:.8; margin-top:4px; letter-spacing:1px; }
+  #hint { position:fixed; bottom:18px; right:20px; color:rgba(255,255,255,.5); font-size:11px; z-index:9; letter-spacing:1px; }
   #loading {
     position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-    color:#9fdcff; font-size:15px; letter-spacing:3px; z-index:20; background:#0b1026;
-    transition:opacity .5s;
+    color:#9fdcff; font-size:15px; letter-spacing:3px; z-index:20; background:#0b1026; transition:opacity .5s;
   }
-  @media (max-width:640px){ #panel{ width:140px; right:10px; padding:12px 10px; } #title h1{ font-size:17px; } }
+  @media (max-width:760px){
+    #profile { display:none; }
+    #panel { width:158px; right:10px; }
+    #caption { max-width:92vw; bottom:12px; padding:8px 14px; }
+    #hint { display:none; }
+  }
 </style>
 <script type="importmap">
 { "imports": {
@@ -59,22 +90,51 @@
 <div id="loading">🐋 正在召唤肥鱼…</div>
 <div id="scene"></div>
 <div id="title">
-  <h1>🐋 <span class="fish">肥鱼</span> · 鲸鱼娘女仆 3D</h1>
-  <p>DeepSeek 社区二创形象 · 网页换装版</p>
+  <h1>🐋 <span class="fish">肥鱼</span> · 3D 换装馆</h1>
+  <p>DEEPSEEK 社区二创 · 鲸鱼娘女仆</p>
 </div>
+
+<div id="profile">
+  <h3>— 角色档案 —</h3>
+  <div class="row"><span class="k">名字</span><span class="v">肥鱼（大肥鱼）</span></div>
+  <div class="row"><span class="k">种族</span><span class="v">鲸鱼娘 🐋</span></div>
+  <div class="row"><span class="k">性格</span><span class="v">傲娇、嘴硬心软</span></div>
+  <div class="row"><span class="k">爱好</span><span class="v">米饭 🍚、摸鱼</span></div>
+  <div class="row"><span class="k">特技</span><span class="v">写代码、干家务、吐槽主人</span></div>
+  <div class="row"><span class="k">禁忌</span><span class="v">绝对不许说她胖！</span></div>
+  <div class="quote">「才……才不是大肥鱼呢！米饭再来一碗！」</div>
+</div>
+
 <div id="panel">
   <h3>— 换装 —</h3>
-  <button class="outfit-btn active" data-outfit="maid">🎀 经典女仆装</button>
-  <button class="outfit-btn" data-outfit="whale">🌊 鲸鱼娘装</button>
-  <button class="outfit-btn" data-outfit="casual">🍚 休闲居家装</button>
-  <div class="row-btns">
+  <div id="outfitList"></div>
+  <h3>— 表情 —</h3>
+  <div class="btn-grid">
+    <button class="mini-btn on" data-expr="smile">微笑</button>
+    <button class="mini-btn" data-expr="happy">大笑</button>
+    <button class="mini-btn" data-expr="wink">眨眼</button>
+  </div>
+  <h3>— 场景 —</h3>
+  <div class="btn-grid">
+    <button class="mini-btn on" data-scene="ocean">海洋</button>
+    <button class="mini-btn" data-scene="night">星夜</button>
+    <button class="mini-btn" data-scene="sakura">樱花</button>
+  </div>
+  <h3>— 动作 —</h3>
+  <div class="btn-grid two">
     <button class="mini-btn on" id="btnRotate">旋转</button>
     <button class="mini-btn" id="btnWave">招手</button>
   </div>
-  <div class="row-btns">
+  <div class="btn-grid two" style="margin-top:6px">
     <button class="mini-btn" id="btnBubbles">泡泡</button>
     <button class="mini-btn" id="btnReset">视角</button>
   </div>
+  <button id="btnPhoto">📷 拍照保存</button>
+</div>
+
+<div id="caption">
+  <div class="name" id="capName">🎀 经典女仆装</div>
+  <div class="desc" id="capDesc">深海蓝长裙配小鲸鱼围裙，肥鱼的本体打扮</div>
 </div>
 <div id="hint">拖拽旋转 · 滚轮缩放 · 右键平移</div>
 
@@ -95,15 +155,14 @@ const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x16204a, 18, 42);
 
 const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 100);
-camera.position.set(3.4, 2.9, 6.4);
+camera.position.set(3.6, 3.0, 6.8);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 1.75, 0);
+controls.target.set(0, 1.8, 0);
 controls.enableDamping = true;
 controls.minDistance = 3; controls.maxDistance = 14;
 controls.maxPolarAngle = Math.PI * 0.55;
 
-/* 灯光 */
 scene.add(new THREE.HemisphereLight(0xbdd8ff, 0x1a2340, 0.85));
 const key = new THREE.DirectionalLight(0xffffff, 1.6);
 key.position.set(5, 8, 6); key.castShadow = true;
@@ -116,19 +175,20 @@ rim.position.set(-6, 4, -5); scene.add(rim);
 const fill = new THREE.DirectionalLight(0xffe0c0, 0.35);
 fill.position.set(-3, 2, 6); scene.add(fill);
 
-/* ============ 材质工具 ============ */
+/* ============ 材质与工具 ============ */
 const M = (color, o={}) => new THREE.MeshStandardMaterial(Object.assign({ color, roughness:.65, metalness:.05 }, o));
 const skinMat  = M(0xffd9c2, { roughness:.55 });
 const hairMat  = M(0x2f6bd8, { roughness:.5 });
-const hairDark = M(0x1e4aa8, { roughness:.55 });
-const hairLite = M(0x7fb2ff, { roughness:.5 });
+const hairDark = M(0x1d469e, { roughness:.55 });
+const hairLite = M(0x8fbdf5, { roughness:.5 });
 const whiteMat = M(0xf7f9ff, { roughness:.6 });
-const blackMat = M(0x20232e, { roughness:.7 });
-const eyeMat   = M(0x1c2b4a, { roughness:.25 });
+const navyMat  = M(0x232a4a, { roughness:.7 });
+const blackMat = M(0x1d2030, { roughness:.7 });
+const eyeMat   = M(0x27407c, { roughness:.2 });
 const hlMat    = new THREE.MeshBasicMaterial({ color:0xffffff });
-const blushMat = M(0xff9db0, { roughness:.8 });
-const mouthMat = M(0xc25a6b, { roughness:.6 });
-const deepBlue = M(0x4d6bfe, { roughness:.6 });
+const blushMat = M(0xff9db0, { roughness:.85 });
+const mouthMat = M(0xb8546a, { roughness:.6 });
+const goldMat  = M(0xd8b46a, { roughness:.35, metalness:.6 });
 
 function mesh(geo, mat, x=0, y=0, z=0, shadow=true){
   const m = new THREE.Mesh(geo, mat);
@@ -149,12 +209,24 @@ function limb(p1, p2, r, mat){
   return g;
 }
 function lathe(pts, mat, seg=28, phiStart=0, phiLen=Math.PI*2){
-  const v = pts.map(p => new THREE.Vector2(p[0], p[1]));
-  const m = new THREE.Mesh(new THREE.LatheGeometry(v, seg, phiStart, phiLen), mat);
+  const m = new THREE.Mesh(new THREE.LatheGeometry(pts.map(p => new THREE.Vector2(p[0], p[1])), seg, phiStart, phiLen), mat);
   m.castShadow = true; m.receiveShadow = true;
   return m;
 }
-
+function ring(r, tube, mat, y, seg=40){
+  const m = mesh(new THREE.TorusGeometry(r, tube, 10, seg), mat, 0, y, 0);
+  m.rotation.x = Math.PI/2; return m;
+}
+/* 小蝴蝶结 */
+function bow(mat, s=1){
+  const g = new THREE.Group();
+  for (const sd of [-1, 1]){
+    const w = mesh(new THREE.ConeGeometry(0.09*s, 0.16*s, 8), mat, sd*0.10*s, 0, 0);
+    w.rotation.z = sd * 1.35; g.add(w);
+  }
+  g.add(mesh(new THREE.SphereGeometry(0.045*s, 10, 8), mat, 0, 0, 0.02*s, false));
+  return g;
+}
 /* ============ 角色根 ============ */
 const feiyu = new THREE.Group();
 scene.add(feiyu);
@@ -163,202 +235,378 @@ feiyu.add(bodyG);
 
 /* ---- 头 ---- */
 const headG = new THREE.Group();
-headG.position.set(0, 2.78, 0);
+headG.position.set(0, 2.82, 0);
 bodyG.add(headG);
 headG.add(mesh(new THREE.SphereGeometry(0.42, 32, 24), skinMat));
 
+/* 脸：眼睛 / 高光 / 腮红 / 嘴（3 种表情切换） */
+const eyes = [];
 for (const s of [-1, 1]){
-  const eye = mesh(new THREE.SphereGeometry(0.078, 18, 14), eyeMat, s*0.165, 0.03, 0.355);
-  eye.scale.set(1, 1.35, 0.55); headG.add(eye);
-  headG.add(mesh(new THREE.SphereGeometry(0.026, 10, 8), hlMat, s*0.145, 0.06, 0.415, false));
-  const blush = mesh(new THREE.SphereGeometry(0.06, 12, 10), blushMat, s*0.28, -0.12, 0.315, false);
-  blush.scale.set(1, 0.6, 0.4); headG.add(blush);
-  /* 小圆鳍耳朵（鲸鱼娘特征） */
-  const fin = mesh(new THREE.ConeGeometry(0.09, 0.22, 10), hairMat, s*0.44, 0.10, -0.02);
-  fin.rotation.z = s * -1.9; headG.add(fin);
+  const eg = new THREE.Group(); eg.position.set(s*0.165, 0.04, 0.35); headG.add(eg);
+  const eye = mesh(new THREE.SphereGeometry(0.082, 18, 14), eyeMat);
+  eye.scale.set(1, 1.4, 0.5); eg.add(eye);
+  eg.add(mesh(new THREE.SphereGeometry(0.028, 10, 8), hlMat, -0.02, 0.035, 0.055, false));
+  eg.add(mesh(new THREE.SphereGeometry(0.014, 8, 6), hlMat, 0.03, -0.03, 0.06, false));
+  eyes.push(eg);
+  const blush = mesh(new THREE.SphereGeometry(0.065, 12, 10), blushMat, s*0.285, -0.13, 0.30, false);
+  blush.scale.set(1, 0.65, 0.4); headG.add(blush);
+  /* 鲸鱼鳍耳 */
+  const fin = mesh(new THREE.ConeGeometry(0.13, 0.34, 10), hairDark, s*0.47, 0.12, -0.03);
+  fin.scale.z = 0.45; fin.rotation.z = s * -1.75; headG.add(fin);
+  const finIn = mesh(new THREE.ConeGeometry(0.07, 0.20, 8), hairLite, s*0.45, 0.12, 0.01, false);
+  finIn.scale.z = 0.4; finIn.rotation.z = s * -1.75; headG.add(finIn);
 }
-const mouth = mesh(new THREE.TorusGeometry(0.045, 0.014, 8, 14, Math.PI), mouthMat, 0, -0.185, 0.385, false);
-mouth.rotation.z = Math.PI; headG.add(mouth);
+const mouthSmile = mesh(new THREE.TorusGeometry(0.05, 0.015, 8, 16, Math.PI), mouthMat, 0, -0.19, 0.385, false);
+mouthSmile.rotation.z = Math.PI; headG.add(mouthSmile);
+const mouthOpen = mesh(new THREE.SphereGeometry(0.055, 14, 12), M(0x8e3d4e, { roughness:.5 }), 0, -0.20, 0.375, false);
+mouthOpen.scale.set(1.1, 1.25, 0.5); mouthOpen.visible = false; headG.add(mouthOpen);
+function setExpr(e){
+  eyes[0].children[0].scale.set(1, e === 'wink' ? 1.4 : 1.4, 0.5);
+  eyes[1].children[0].scale.y = e === 'wink' ? 0.12 : 1.4;   // 右眼闭
+  mouthSmile.visible = (e !== 'happy');
+  mouthOpen.visible = (e === 'happy');
+  document.querySelectorAll('[data-expr]').forEach(b => b.classList.toggle('on', b.dataset.expr === e));
+}
+setExpr('smile');
 
-/* ---- 头发 ---- */
+/* ---- 长发（参考图：及腰波浪长发） ---- */
 const hairG = new THREE.Group(); bodyG.add(hairG);
-const backHair = mesh(new THREE.SphereGeometry(0.47, 24, 18), hairDark, 0, 2.66, -0.14);
-backHair.scale.set(1.02, 1.3, 0.92); hairG.add(backHair);
-hairG.add(mesh(new THREE.SphereGeometry(0.45, 24, 18), hairMat, 0, 2.95, -0.03));
-for (let i = -2; i <= 2; i++){
-  const bang = mesh(new THREE.ConeGeometry(0.085, 0.30, 8), hairMat, i*0.15, 3.02, 0.33);
-  bang.rotation.x = 0.5; bang.rotation.z = -i*0.12; hairG.add(bang);
-}
-const tails = [];
-for (const s of [-1, 1]){
-  const tg = new THREE.Group(); tg.position.set(s*0.36, 3.02, -0.08); hairG.add(tg);
-  tg.add(mesh(new THREE.TorusGeometry(0.075, 0.03, 10, 16), whiteMat));
-  let y = -0.10;
-  [0.13, 0.115, 0.10, 0.085].forEach((r, i) => {
-    tg.add(mesh(new THREE.SphereGeometry(r, 14, 12), hairMat, s*(0.10 + i*0.09), y, -0.02 - i*0.03));
-    y -= 0.20;
+hairG.add(mesh(new THREE.SphereGeometry(0.45, 24, 18), hairMat, 0, 2.98, -0.04));   // 顶发
+const backHair = mesh(new THREE.SphereGeometry(0.46, 24, 18), hairDark, 0, 2.70, -0.16);
+backHair.scale.set(1.0, 1.25, 0.9); hairG.add(backHair);
+/* 脑后长发：5 节垂到腰际，S 形 */
+const hairSway = [];
+{
+  let px = 0, py = 2.55, pz = -0.30;
+  const rs = [0.34, 0.32, 0.29, 0.25, 0.20];
+  rs.forEach((r, i) => {
+    px = Math.sin(i*0.9)*0.06;
+    const s = mesh(new THREE.SphereGeometry(r, 16, 14), i % 2 ? hairMat : hairDark, px, py, pz);
+    s.scale.set(1, 1.25, 0.85); hairG.add(s);
+    if (i >= 2) hairSway.push(s);
+    py -= 0.34; pz -= 0.045;
   });
-  const tip = mesh(new THREE.ConeGeometry(0.085, 0.28, 10), hairDark, s*0.46, y + 0.10, -0.14);
-  tip.rotation.z = s * 0.5; tg.add(tip);
-  tails.push({ g: tg, s });
+  const tip = mesh(new THREE.ConeGeometry(0.16, 0.4, 10), hairDark, px, py + 0.12, pz);
+  tip.rotation.x = Math.PI; hairG.add(tip); hairSway.push(tip);
+}
+/* 两颊侧发 */
+for (const s of [-1, 1]){
+  let py = 2.95;
+  [0.16, 0.14, 0.11].forEach((r, i) => {
+    hairG.add(mesh(new THREE.SphereGeometry(r, 14, 12), hairMat, s*(0.38 - i*0.03), py, 0.10 - i*0.04));
+    py -= 0.30;
+  });
+}
+/* 刘海 */
+for (let i = -3; i <= 3; i++){
+  const bang = mesh(new THREE.ConeGeometry(0.075, 0.32, 8), hairMat, i*0.115, 3.10, 0.335);
+  bang.rotation.x = 0.45; bang.rotation.z = -i*0.10; hairG.add(bang);
+}
+/* 呆毛 */
+const ahoge = mesh(new THREE.TorusGeometry(0.09, 0.018, 8, 12, Math.PI*0.9), hairMat, 0.05, 3.44, -0.02, false);
+ahoge.rotation.z = -0.4; hairG.add(ahoge);
+/* 头饰：白色花边发箍 */
+{
+  const band = mesh(new THREE.TorusGeometry(0.44, 0.035, 10, 32, Math.PI), whiteMat, 0, 3.06, -0.02);
+  band.rotation.x = -0.25; hairG.add(band);
+  for (let i = 0; i <= 10; i++){
+    const a = (i/10) * Math.PI;
+    const f = mesh(new THREE.SphereGeometry(0.075, 10, 8), whiteMat,
+      Math.cos(a)*0.45, 3.06 + Math.sin(a)*0.45*0.9, -0.02 - Math.sin(a)*0.06, false);
+    f.scale.set(1, 0.75, 0.7); hairG.add(f);
+  }
+  const sideBow = bow(hairLite, 0.9); sideBow.position.set(-0.42, 3.22, 0.10);
+  sideBow.rotation.y = 0.5; hairG.add(sideBow);
 }
 
 /* ---- 脖子 + 打底躯干 ---- */
-bodyG.add(mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.28, 14), skinMat, 0, 2.42, 0));
-bodyG.add(mesh(new THREE.CylinderGeometry(0.27, 0.30, 0.75, 18), M(0xf3ede4), 0, 1.98, 0));
+bodyG.add(mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.28, 14), skinMat, 0, 2.46, 0));
+bodyG.add(mesh(new THREE.CylinderGeometry(0.25, 0.28, 0.75, 18), M(0xf3ede4), 0, 2.02, 0));
 
-/* ---- 手臂（肩关节可动） ---- */
+/* ---- 手臂（肩关节） ---- */
 const arms = {};
-const armExtras = { maid: [], whale: [], casual: [] };
 for (const s of [-1, 1]){
-  const sh = new THREE.Group(); sh.position.set(s*0.35, 2.28, 0); bodyG.add(sh);
-  sh.add(limb([0, 0.02, 0], [s*0.05, -0.42, 0.02], 0.095, skinMat));
-  sh.add(mesh(new THREE.SphereGeometry(0.105, 14, 12), skinMat, s*0.05, -0.46, 0.02));
-  sh.rotation.z = s * 0.12;
-  const nm = s < 0 ? 'L' : 'R';
-  arms[nm] = sh;
-  /* 各服装的袖口，平时只显示当前套装的 */
-  const cuffM = mesh(new THREE.CylinderGeometry(0.115, 0.125, 0.13, 14), whiteMat, s*0.05, -0.34, 0.02);
-  const cuffW = mesh(new THREE.CylinderGeometry(0.115, 0.125, 0.13, 14), hairLite, s*0.05, -0.34, 0.02);
-  const cuffC = mesh(new THREE.CylinderGeometry(0.12, 0.13, 0.16, 14), deepBlue, s*0.05, -0.32, 0.02);
-  cuffM.visible = cuffW.visible = cuffC.visible = false;
-  sh.add(cuffM, cuffW, cuffC);
-  armExtras.maid.push(cuffM); armExtras.whale.push(cuffW); armExtras.casual.push(cuffC);
+  const sh = new THREE.Group(); sh.position.set(s*0.33, 2.32, 0); bodyG.add(sh);
+  sh.add(limb([0, 0.02, 0], [s*0.05, -0.44, 0.02], 0.09, skinMat));
+  sh.add(mesh(new THREE.SphereGeometry(0.10, 14, 12), skinMat, s*0.05, -0.48, 0.02));
+  sh.rotation.z = s * 0.10;
+  arms[s < 0 ? 'L' : 'R'] = sh;
 }
-/* ---- 腿 + 鞋 ---- */
-for (const s of [-1, 1]){
-  bodyG.add(limb([s*0.15, 1.62, 0], [s*0.16, 0.42, 0.01], 0.115, skinMat));
-  bodyG.add(mesh(new THREE.BoxGeometry(0.20, 0.14, 0.34), blackMat, s*0.16, 0.12, 0.05));
-  bodyG.add(mesh(new THREE.BoxGeometry(0.21, 0.05, 0.20), whiteMat, s*0.16, 0.21, -0.03));
-}
+/* ---- 腿（皮肤打底，各服装自行加袜子） ---- */
+for (const s of [-1, 1])
+  bodyG.add(limb([s*0.14, 1.66, 0], [s*0.15, 0.40, 0.01], 0.11, skinMat));
 
-/* ============ 三套服装 ============ */
+/* ============ 换装系统 ============ */
+const OUTFITS = [];
 const outfits = {};
-function newOutfit(name){
-  const g = new THREE.Group(); g.visible = false;
-  bodyG.add(g); outfits[name] = g; return g;
+const armExtras = {};
+function newOutfit(id, name, tag, tagLabel, desc){
+  const g = new THREE.Group(); g.visible = false; bodyG.add(g);
+  outfits[id] = g; armExtras[id] = [];
+  OUTFITS.push({ id, name, tag, tagLabel, desc });
+  return g;
 }
+function armAdd(outfitId, s, m){
+  m.visible = false;
+  arms[s < 0 ? 'L' : 'R'].add(m);
+  armExtras[outfitId].push(m);
+}
+/* 小鲸鱼印花（围裙用 Canvas 纹理） */
+function whaleTexture(){
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d');
+  x.fillStyle = '#f7f9ff'; x.fillRect(0, 0, 256, 256);
+  x.fillStyle = '#2f6bd8';
+  x.beginPath(); x.ellipse(128, 140, 70, 45, 0, 0, Math.PI*2); x.fill();
+  x.beginPath(); x.moveTo(188,128); x.lineTo(236,98); x.lineTo(226,140); x.lineTo(236,178); x.lineTo(188,156); x.closePath(); x.fill();
+  x.fillStyle = '#bcd6ff';
+  x.beginPath(); x.ellipse(128, 158, 48, 26, 0, 0, Math.PI*2); x.fill();
+  x.fillStyle = '#1c2b4a'; x.beginPath(); x.arc(95, 128, 7, 0, Math.PI*2); x.fill();
+  x.strokeStyle = '#2f6bd8'; x.lineWidth = 6; x.lineCap = 'round';
+  x.beginPath(); x.moveTo(126,92); x.quadraticCurveTo(118,68,102,60); x.stroke();
+  x.beginPath(); x.moveTo(134,92); x.quadraticCurveTo(142,68,158,60); x.stroke();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+const whaleTex = whaleTexture();
+const apronPrintMat = new THREE.MeshStandardMaterial({ map: whaleTex, roughness:.7 });
 
-/* ---- 1. 经典女仆装 ---- */
+/* ---- 1. 经典女仆装（还原参考图）[还原] ---- */
+let maidTail;
 {
-  const g = newOutfit('maid');
-  g.add(mesh(new THREE.CylinderGeometry(0.27, 0.31, 0.62, 20), blackMat, 0, 2.02, 0));           // 紧身衣
-  g.add(lathe([[0.30,1.80],[0.42,1.55],[0.55,1.20],[0.66,0.85],[0.68,0.72]], blackMat));          // 蓬蓬裙
-  const hem = mesh(new THREE.TorusGeometry(0.66, 0.05, 10, 32), whiteMat, 0, 0.74, 0);
-  hem.rotation.x = Math.PI/2; g.add(hem);                                                        // 裙摆花边
-  const apron = lathe([[0.32,1.70],[0.42,1.42],[0.52,1.08],[0.58,0.80]], whiteMat, 24, -0.85, 1.7);
-  apron.material = whiteMat.clone(); apron.material.side = THREE.DoubleSide; g.add(apron);       // 围裙
-  const bib = mesh(new THREE.BoxGeometry(0.36, 0.34, 0.05), whiteMat, 0, 2.22, 0.27);
-  bib.rotation.x = -0.08; g.add(bib);                                                            // 胸前围裙
-  const band = mesh(new THREE.TorusGeometry(0.325, 0.028, 10, 28), whiteMat, 0, 1.74, 0);
-  band.rotation.x = Math.PI/2; g.add(band);                                                      // 腰带
-  for (const s of [-1, 1]){                                                                      // 背后蝴蝶结
-    const bow = mesh(new THREE.SphereGeometry(0.09, 12, 10), whiteMat, s*0.10, 1.78, -0.34);
-    bow.scale.set(1.3, 0.8, 0.5); g.add(bow);
+  const g = newOutfit('maid', '🎀 经典女仆装', 'cool', '还原', '深海蓝长裙配小鲸鱼围裙，肥鱼的本体打扮');
+  g.add(mesh(new THREE.CylinderGeometry(0.26, 0.30, 0.60, 20), navyMat, 0, 2.04, 0));   // 紧身衣
+  for (const s of [-1, 1]){                                                              // 长袖+袖口（跟随手臂）
+    armAdd('maid', s, mesh(new THREE.CylinderGeometry(0.115, 0.105, 0.42, 14), navyMat, s*0.025, -0.19, 0.01));
+    armAdd('maid', s, mesh(new THREE.CylinderGeometry(0.11, 0.12, 0.10, 14), whiteMat, s*0.045, -0.40, 0.02));
+    const cf = mesh(new THREE.TorusGeometry(0.115, 0.035, 8, 18), whiteMat, s*0.045, -0.44, 0.02);
+    cf.rotation.x = Math.PI/2; armAdd('maid', s, cf);
+    const puff = mesh(new THREE.SphereGeometry(0.14, 14, 12), navyMat, s*0.33, 2.36, 0); // 肩泡泡袖
+    puff.scale.set(1, 0.85, 1); g.add(puff);
+    g.add(ring(0.14, 0.03, whiteMat, 2.30).translateX(s*0.33));
   }
-  g.add(mesh(new THREE.SphereGeometry(0.05, 10, 8), whiteMat, 0, 1.78, -0.35));
-  const collar = mesh(new THREE.TorusGeometry(0.155, 0.045, 10, 24), whiteMat, 0, 2.52, 0);
-  collar.rotation.x = Math.PI/2; g.add(collar);                                                  // 领口
-  for (const s of [-1, 1]){                                                                      // 泡泡袖
-    const puff = mesh(new THREE.SphereGeometry(0.15, 14, 12), whiteMat, s*0.35, 2.32, 0);
-    puff.scale.set(1, 0.8, 1); g.add(puff);
-  }
-  /* 头饰 */
-  const hd = new THREE.Group(); hd.position.set(0, 3.44, 0); hd.rotation.x = 0.08; g.add(hd);
-  hd.add(mesh(new THREE.CylinderGeometry(0.30, 0.30, 0.05, 24), whiteMat));
-  const frill = mesh(new THREE.TorusGeometry(0.30, 0.05, 10, 28), whiteMat, 0, 0, 0);
-  frill.rotation.x = Math.PI/2; hd.add(frill);
+  g.add(ring(0.16, 0.05, whiteMat, 2.56));                                                // 白色荷叶领
+  const tie = bow(blackMat, 1.1); tie.position.set(0, 2.42, 0.27); g.add(tie);             // 黑色领结
+  g.add(mesh(new THREE.OctahedronGeometry(0.045), M(0x38bdf8, { roughness:.2, metalness:.4 }), 0, 2.42, 0.32, false)); // 蓝宝石
+  const bib = mesh(new THREE.PlaneGeometry(0.42, 0.42), apronPrintMat, 0, 2.12, 0.295);  // 围裙胸巾（鲸鱼印花）
+  bib.rotation.x = -0.06; g.add(bib);
+  const askirt = lathe([[0.31,1.72],[0.42,1.42],[0.52,1.05],[0.60,0.78]], whiteMat, 24, -0.9, 1.8);
+  askirt.material = whiteMat.clone(); askirt.material.side = THREE.DoubleSide; g.add(askirt);
+  g.add(ring(0.60, 0.055, whiteMat, 0.78));                                               // 围裙荷叶边
+  const printPlane = mesh(new THREE.PlaneGeometry(0.34, 0.34), apronPrintMat, 0, 1.18, 0.545, false);
+  printPlane.rotation.x = -0.18; g.add(printPlane);                                       // 裙摆小鲸鱼
+  g.add(lathe([[0.30,1.78],[0.45,1.45],[0.58,1.05],[0.70,0.60],[0.74,0.42]], navyMat, 30)); // 深蓝长裙
+  g.add(ring(0.73, 0.06, whiteMat, 0.44));                                                // 裙摆白边
+  g.add(ring(0.695, 0.018, goldMat, 0.56));                                               // 金色绣线
+  for (const s of [-1, 1]){ const b = bow(navyMat, 0.8); b.position.set(s*0.42, 0.88, 0.50); g.add(b); }
+  /* 鲸鱼尾（右侧身后，可摆动） */
+  maidTail = new THREE.Group(); maidTail.position.set(0.18, 1.55, -0.40); g.add(maidTail);
   for (const s of [-1, 1]){
-    const b = mesh(new THREE.ConeGeometry(0.07, 0.16, 8), hairMat, s*0.09, 0.03, 0.24);
-    b.rotation.z = s * 1.2; hd.add(b);
+    const fl = mesh(new THREE.ConeGeometry(0.17, 0.62, 8), hairDark, s*0.22, -0.12, -0.14);
+    fl.scale.z = 0.35; fl.rotation.x = -0.7; fl.rotation.z = s * 0.8; maidTail.add(fl);
+  }
+  for (const s of [-1, 1]){                                                              // 白色过膝袜
+    g.add(mesh(new THREE.CylinderGeometry(0.12, 0.115, 0.78, 14), whiteMat, s*0.15, 0.88, 0.01));
+    g.add(ring(0.12, 0.022, whiteMat, 1.26).translateX(s*0.15));
+    g.add(mesh(new THREE.BoxGeometry(0.20, 0.13, 0.34), navyMat, s*0.15, 0.10, 0.05));   // 玛丽珍鞋
+    g.add(mesh(new THREE.BoxGeometry(0.21, 0.035, 0.06), whiteMat, s*0.15, 0.16, 0.05, false)); // 鞋扣带
   }
 }
 
-/* ---- 2. 鲸鱼娘装 ---- */
+/* ---- 2. 樱花洛丽塔 [可爱] ---- */
+{
+  const g = newOutfit('lolita', '🌸 樱花洛丽塔', 'cute', '可爱', '粉白草莓裙摆，甜度超标的茶话会装扮');
+  const pinkMat = M(0xffb7d5, { roughness:.6 });
+  const pinkDark = M(0xf28fb8, { roughness:.6 });
+  g.add(mesh(new THREE.CylinderGeometry(0.26, 0.30, 0.55, 20), pinkMat, 0, 2.05, 0));
+  for (const s of [-1, 1]){
+    const puff = mesh(new THREE.SphereGeometry(0.15, 14, 12), pinkMat, s*0.33, 2.34, 0);
+    puff.scale.set(1, 0.8, 1); g.add(puff);
+    g.add(ring(0.15, 0.032, whiteMat, 2.28).translateX(s*0.33));
+    armAdd('lolita', s, mesh(new THREE.CylinderGeometry(0.11, 0.12, 0.12, 14), whiteMat, s*0.045, -0.40, 0.02));
+  }
+  g.add(ring(0.155, 0.04, whiteMat, 2.55));
+  const neck = bow(pinkDark, 1.0); neck.position.set(0, 2.44, 0.26); g.add(neck);
+  g.add(lathe([[0.30,1.78],[0.48,1.45],[0.62,1.10]], pinkMat, 30));
+  g.add(ring(0.60, 0.07, whiteMat, 1.12));
+  g.add(ring(0.615, 0.02, pinkDark, 1.20));
+  const bigBow = bow(whiteMat, 1.7); bigBow.position.set(0, 1.72, -0.36); g.add(bigBow);  // 背后大蝴蝶结
+  for (const s of [-1, 1]){
+    g.add(mesh(new THREE.CylinderGeometry(0.115, 0.11, 0.42, 14), whiteMat, s*0.15, 0.62, 0.01));
+    g.add(mesh(new THREE.BoxGeometry(0.20, 0.13, 0.34), pinkDark, s*0.15, 0.10, 0.05));
+  }
+  const hp = bow(pinkDark, 0.8); hp.position.set(0.40, 3.18, 0.12); hp.rotation.y = 0.6; g.add(hp);
+}
+
+/* ---- 3. 冰川鲸鱼娘 [可爱] ---- */
 let whaleTail;
 {
-  const g = newOutfit('whale');
-  g.add(mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.62, 20), hairMat, 0, 2.02, 0));            // 上衣
-  g.add(lathe([[0.30,1.80],[0.44,1.50],[0.58,1.10],[0.70,0.78]], M(0x3b7de0), 28));               // 渐变裙
-  const hem = mesh(new THREE.TorusGeometry(0.68, 0.035, 10, 32), hairLite, 0, 0.80, 0);
-  hem.rotation.x = Math.PI/2; g.add(hem);
-  const sash = mesh(new THREE.TorusGeometry(0.33, 0.035, 10, 28), hairLite, 0, 1.80, 0);
-  sash.rotation.x = Math.PI/2; g.add(sash);                                                      // 腰带
-  for (const s of [-1, 1]){                                                                      // 肩鳍
-    const f = mesh(new THREE.ConeGeometry(0.10, 0.24, 8), hairLite, s*0.40, 2.36, 0);
-    f.rotation.z = s * -1.1; g.add(f);
-  }
-  for (let i = 0; i < 10; i++){                                                                  // 珍珠项链
-    const a = (i/10) * Math.PI * 2;
-    g.add(mesh(new THREE.SphereGeometry(0.035, 10, 8), whiteMat, Math.cos(a)*0.17, 2.50, Math.sin(a)*0.17, false));
-  }
-  const pin = mesh(new THREE.ConeGeometry(0.08, 0.18, 8), hairLite, 0.33, 3.12, 0.12);
-  pin.rotation.z = -0.9; g.add(pin);                                                             // 鳍发卡
-  /* 鲸鱼尾（可摆动） */
-  whaleTail = new THREE.Group(); whaleTail.position.set(0, 1.62, -0.38); g.add(whaleTail);
+  const g = newOutfit('whale', '🌊 冰川鲸鱼娘', 'cute', '可爱', '回到大海的装扮，尾巴会跟着心情摆动');
+  g.add(mesh(new THREE.CylinderGeometry(0.26, 0.30, 0.58, 20), hairMat, 0, 2.04, 0));
+  g.add(lathe([[0.30,1.78],[0.45,1.45],[0.60,1.05],[0.72,0.70]], M(0x3b7de0), 30));
+  g.add(ring(0.70, 0.04, hairLite, 0.72));
+  g.add(ring(0.315, 0.03, hairLite, 1.76));
   for (const s of [-1, 1]){
-    const fl = mesh(new THREE.ConeGeometry(0.17, 0.55, 8), hairDark, s*0.20, -0.10, -0.12);
-    fl.scale.z = 0.35; fl.rotation.x = -0.7; fl.rotation.z = s * 0.75;
-    whaleTail.add(fl);
+    const f = mesh(new THREE.ConeGeometry(0.10, 0.24, 8), hairLite, s*0.40, 2.38, 0);
+    f.rotation.z = s * -1.1; g.add(f);
+    armAdd('whale', s, mesh(new THREE.CylinderGeometry(0.11, 0.12, 0.12, 14), hairLite, s*0.045, -0.40, 0.02));
+  }
+  for (let i = 0; i < 10; i++){
+    const a = (i/10) * Math.PI * 2;
+    g.add(mesh(new THREE.SphereGeometry(0.035, 10, 8), whiteMat, Math.cos(a)*0.165, 2.54, Math.sin(a)*0.165, false));
+  }
+  const pin = mesh(new THREE.ConeGeometry(0.08, 0.18, 8), hairLite, 0.34, 3.14, 0.12, false);
+  pin.rotation.z = -0.9; g.add(pin);
+  whaleTail = new THREE.Group(); whaleTail.position.set(0, 1.60, -0.38); g.add(whaleTail);
+  for (const s of [-1, 1]){
+    const fl = mesh(new THREE.ConeGeometry(0.18, 0.66, 8), hairDark, s*0.23, -0.12, -0.14);
+    fl.scale.z = 0.32; fl.rotation.x = -0.7; fl.rotation.z = s * 0.8; whaleTail.add(fl);
+  }
+  for (const s of [-1, 1]){
+    g.add(mesh(new THREE.BoxGeometry(0.19, 0.10, 0.32), hairMat, s*0.15, 0.09, 0.05));
+    g.add(mesh(new THREE.BoxGeometry(0.20, 0.04, 0.08), whiteMat, s*0.15, 0.13, 0.02, false));
   }
 }
 
-/* ---- 3. 休闲居家装 ---- */
+/* ---- 4. 御姐OL [御姐] ---- */
 {
-  const g = newOutfit('casual');
-  g.add(mesh(new THREE.CylinderGeometry(0.34, 0.40, 0.85, 20), deepBlue, 0, 1.98, 0));           // 卫衣
-  g.add(mesh(new THREE.BoxGeometry(0.32, 0.24, 0.12), M(0x3d55d8), 0, 1.72, 0.30));              // 口袋
-  const hood = mesh(new THREE.TorusGeometry(0.19, 0.085, 12, 24), deepBlue, 0, 2.50, -0.20);
-  hood.rotation.x = 1.2; g.add(hood);                                                             // 帽子
-  for (const s of [-1, 1])
-    g.add(mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.30, 8), whiteMat, s*0.10, 2.15, 0.33, false)); // 抽绳
-  g.add(lathe([[0.33,1.60],[0.46,1.32],[0.55,1.02]], M(0x2a3350), 24));                          // 短裙
-  const stripe = mesh(new THREE.TorusGeometry(0.545, 0.02, 8, 28), whiteMat, 0, 1.04, 0);
-  stripe.rotation.x = Math.PI/2; g.add(stripe);
-  for (const s of [-1, 1])                                                                        // 堆堆袜
-    g.add(mesh(new THREE.CylinderGeometry(0.125, 0.135, 0.40, 14), whiteMat, s*0.16, 0.62, 0.01));
-  const star = mesh(new THREE.SphereGeometry(0.055, 8, 6), M(0xffd76b, { roughness:.4 }), 0.30, 3.10, 0.22, false);
-  star.scale.set(1, 1, 0.5); g.add(star);                                                         // 星星发卡
+  const g = newOutfit('office', '💼 御姐OL装', 'cool', '御姐', '黑框眼镜配包臀裙，职场气场全开的姐姐');
+  g.add(mesh(new THREE.CylinderGeometry(0.26, 0.29, 0.62, 20), whiteMat, 0, 2.04, 0));   // 白衬衫
+  g.add(mesh(new THREE.CylinderGeometry(0.30, 0.33, 0.45, 20), blackMat, 0, 2.22, 0));   // 西装外套
+  g.add(mesh(new THREE.BoxGeometry(0.20, 0.42, 0.06), whiteMat, 0, 2.16, 0.29, false));   // 衬衫前襟
+  for (const s of [-1, 1]){
+    const lapel = mesh(new THREE.BoxGeometry(0.10, 0.30, 0.04), blackMat, s*0.14, 2.32, 0.27);
+    lapel.rotation.z = s * 0.35; g.add(lapel);
+    armAdd('office', s, mesh(new THREE.CylinderGeometry(0.105, 0.10, 0.42, 14), blackMat, s*0.025, -0.19, 0.01));
+    armAdd('office', s, mesh(new THREE.CylinderGeometry(0.10, 0.11, 0.10, 14), whiteMat, s*0.045, -0.40, 0.02));
+  }
+  g.add(lathe([[0.29,1.75],[0.33,1.40],[0.36,1.05],[0.34,0.85]], blackMat, 26));          // 包臀裙
+  g.add(ring(0.345, 0.015, M(0x444a66), 0.88));
+  for (const s of [-1, 1]){                                                              // 眼镜
+    const fr = mesh(new THREE.TorusGeometry(0.085, 0.012, 8, 20), blackMat, s*0.165, 2.86, 0.375, false);
+    g.add(fr);
+  }
+  g.add(mesh(new THREE.BoxGeometry(0.07, 0.015, 0.015), blackMat, 0, 2.86, 0.375, false));
+  g.add(mesh(new THREE.SphereGeometry(0.035, 10, 8), goldMat, 0, 2.38, 0.30, false));    // 项链吊坠
+  for (const s of [-1, 1]){                                                              // 高跟鞋
+    g.add(mesh(new THREE.BoxGeometry(0.19, 0.10, 0.32), blackMat, s*0.15, 0.10, 0.06));
+    g.add(mesh(new THREE.BoxGeometry(0.05, 0.12, 0.05), blackMat, s*0.15, 0.06, -0.08));
+  }
 }
 
-/* 换装切换 */
-function setOutfit(name){
-  for (const k in outfits) outfits[k].visible = (k === name);
-  for (const k in armExtras) armExtras[k].forEach(m => m.visible = (k === name));
-  document.querySelectorAll('.outfit-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.outfit === name));
+/* ---- 5. 星空晚礼服 [御姐] ---- */
+{
+  const g = newOutfit('gown', '✨ 星空晚礼服', 'cool', '御姐', '把银河穿在身上，优雅即是杀伤力');
+  const gownMat = M(0x232a6e, { roughness:.55 });
+  const gownDark = M(0x161c4e, { roughness:.6 });
+  g.add(mesh(new THREE.CylinderGeometry(0.27, 0.30, 0.55, 22), gownMat, 0, 2.00, 0));
+  g.add(ring(0.272, 0.022, goldMat, 2.26));
+  g.add(lathe([[0.30,1.78],[0.50,1.30],[0.68,0.80],[0.85,0.30],[0.90,0.05]], gownDark, 34));
+  g.add(ring(0.885, 0.025, goldMat, 0.10));
+  const starMat = new THREE.MeshBasicMaterial({ color:0xd8ecff });                        // 裙摆星星
+  for (let i = 0; i < 18; i++){
+    const y = 0.15 + Math.random()*1.45;
+    const r = 0.30 + (1.78 - y) * (0.60/1.73) + 0.02;
+    const a = Math.random() * Math.PI * 2;
+    const st = mesh(new THREE.SphereGeometry(0.022 + Math.random()*0.02, 8, 6), starMat,
+      Math.cos(a)*r, y, Math.sin(a)*r, false);
+    g.add(st);
+  }
+  for (const s of [-1, 1])                                                               // 长手套
+    armAdd('gown', s, mesh(new THREE.CylinderGeometry(0.10, 0.095, 0.46, 14), gownMat, s*0.025, -0.21, 0.01));
+  g.add(ring(0.14, 0.028, blackMat, 2.56));                                               // 黑色choker
+  g.add(mesh(new THREE.OctahedronGeometry(0.04), goldMat, 0, 2.53, 0.145, false));
+  for (const s of [-1, 1]){
+    g.add(mesh(new THREE.BoxGeometry(0.19, 0.10, 0.32), gownMat, s*0.15, 0.10, 0.06));
+    g.add(mesh(new THREE.BoxGeometry(0.05, 0.12, 0.05), gownMat, s*0.15, 0.06, -0.08));
+  }
 }
-setOutfit('maid');
+
+/* ---- 6. 青花旗袍 [性感·优雅] ---- */
+{
+  const g = newOutfit('qipao', '🏵️ 青花旗袍', 'sexy', '性感', '青花瓷色旗袍，东方韵味拉满');
+  const qpMat = M(0x2f6bd8, { roughness:.55 });
+  g.add(mesh(new THREE.CylinderGeometry(0.15, 0.17, 0.18, 16), qpMat, 0, 2.60, 0));       // 立领
+  g.add(ring(0.165, 0.018, whiteMat, 2.52));
+  g.add(mesh(new THREE.CylinderGeometry(0.27, 0.30, 1.00, 22), qpMat, 0, 1.92, 0));       // 旗袍主体
+  g.add(ring(0.298, 0.018, whiteMat, 1.43));                                              // 下摆滚边
+  [[0.06,2.36],[0.01,2.26],[-0.04,2.16]].forEach(([bx, by]) =>                            // 盘扣
+    g.add(mesh(new THREE.SphereGeometry(0.028, 10, 8), goldMat, bx, by, 0.283, false)));
+  for (const s of [-1, 1]){
+    armAdd('qipao', s, mesh(new THREE.CylinderGeometry(0.12, 0.115, 0.18, 14), qpMat, s*0.02, -0.10, 0.01));
+    g.add(ring(0.118, 0.016, whiteMat, 2.13).translateX(s*0.345));
+    g.add(mesh(new THREE.BoxGeometry(0.19, 0.09, 0.32), qpMat, s*0.15, 0.085, 0.05));     // 绣花鞋
+    g.add(mesh(new THREE.BoxGeometry(0.20, 0.03, 0.33), whiteMat, s*0.15, 0.035, 0.05, false));
+  }
+  const sb = bow(whiteMat, 0.7); sb.position.set(0.24, 1.62, 0.16); sb.rotation.y = 0.5; g.add(sb);
+  g.add(mesh(new THREE.SphereGeometry(0.04, 10, 8), goldMat, -0.38, 3.20, 0.10, false));  // 金步摇
+  g.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.16, 6), goldMat, -0.38, 3.12, 0.10, false));
+}
 
 /* ============ 场景装饰 ============ */
+const groundMat = M(0x0a0f24, { roughness:1 });
 {
   const podium = mesh(new THREE.CylinderGeometry(1.7, 1.85, 0.16, 40), M(0x1a2450, { roughness:.4 }), 0, -0.08, 0);
   podium.receiveShadow = true; scene.add(podium);
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.025, 10, 64),
-    new THREE.MeshBasicMaterial({ color:0x38bdf8 }));
-  ring.rotation.x = Math.PI/2; ring.position.y = 0.005; scene.add(ring);
-  const ground = new THREE.Mesh(new THREE.CircleGeometry(40, 32), M(0x0a0f24, { roughness:1 }));
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(40, 32), groundMat);
   ground.rotation.x = -Math.PI/2; ground.position.y = -0.165;
   ground.receiveShadow = true; scene.add(ground);
 }
-/* 泡泡 */
+const podiumRing = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.025, 10, 64),
+  new THREE.MeshBasicMaterial({ color:0x38bdf8 }));
+podiumRing.rotation.x = Math.PI/2; podiumRing.position.y = 0.005; scene.add(podiumRing);
+
+const bubbleMat = new THREE.MeshBasicMaterial({ color:0x9fdcff, transparent:true, opacity:0.45 });
 const bubblesG = new THREE.Group(); bubblesG.visible = false; scene.add(bubblesG);
 const bubbles = [];
-{
-  const bMat = new THREE.MeshBasicMaterial({ color:0x9fdcff, transparent:true, opacity:0.45 });
-  for (let i = 0; i < 36; i++){
-    const r = 0.02 + Math.random()*0.045;
-    const b = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), bMat);
-    b.position.set((Math.random()-0.5)*8, Math.random()*6.5, (Math.random()-0.5)*8);
-    b.userData.speed = 0.25 + Math.random()*0.45;
-    bubblesG.add(b); bubbles.push(b);
-  }
+for (let i = 0; i < 36; i++){
+  const b = new THREE.Mesh(new THREE.SphereGeometry(0.02 + Math.random()*0.045, 10, 8), bubbleMat);
+  b.position.set((Math.random()-0.5)*8, Math.random()*6.5, (Math.random()-0.5)*8);
+  b.userData.speed = 0.25 + Math.random()*0.45;
+  bubblesG.add(b); bubbles.push(b);
+}
+
+/* ============ 场景主题 ============ */
+const SCENES = {
+  ocean: { bg:'linear-gradient(180deg,#0b1026 0%,#16204a 45%,#274b8f 75%,#3d7dd6 100%)', fog:0x16204a, ground:0x0a0f24, ring:0x38bdf8, bubble:0x9fdcff },
+  night: { bg:'linear-gradient(180deg,#05030f 0%,#141031 50%,#2b1f5e 80%,#4a2f8f 100%)', fog:0x141031, ground:0x0b0918, ring:0xc9a7ff, bubble:0xd6c2ff },
+  sakura:{ bg:'linear-gradient(180deg,#2b0f22 0%,#5e2140 45%,#a04a6e 75%,#e89bb8 100%)', fog:0x5e2140, ground:0x241019, ring:0xffb7d5, bubble:0xffc9dd },
+};
+function applyScene(name){
+  const s = SCENES[name];
+  document.body.style.background = s.bg;
+  scene.fog.color.set(s.fog);
+  groundMat.color.set(s.ground);
+  podiumRing.material.color.set(s.ring);
+  bubbleMat.color.set(s.bubble);
+  document.querySelectorAll('[data-scene]').forEach(b => b.classList.toggle('on', b.dataset.scene === name));
+}
+
+/* ============ 换装 UI ============ */
+const outfitList = document.getElementById('outfitList');
+OUTFITS.forEach(o => {
+  const b = document.createElement('button');
+  b.className = 'outfit-btn'; b.dataset.outfit = o.id;
+  b.innerHTML = `<span>${o.name}</span><span class="tag ${o.tag}">${o.tagLabel}</span>`;
+  b.addEventListener('click', () => setOutfit(o.id));
+  outfitList.appendChild(b);
+});
+function setOutfit(id){
+  for (const k in outfits) outfits[k].visible = (k === id);
+  for (const k in armExtras) armExtras[k].forEach(m => m.visible = (k === id));
+  const o = OUTFITS.find(x => x.id === id);
+  document.getElementById('capName').textContent = o.name;
+  document.getElementById('capDesc').textContent = o.desc;
+  document.querySelectorAll('.outfit-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.outfit === id));
 }
 
 /* ============ 交互 ============ */
 let autoRotate = true, waving = false, waveT = 0;
-document.querySelectorAll('.outfit-btn').forEach(b =>
-  b.addEventListener('click', () => setOutfit(b.dataset.outfit)));
+document.querySelectorAll('[data-expr]').forEach(b =>
+  b.addEventListener('click', () => setExpr(b.dataset.expr)));
+document.querySelectorAll('[data-scene]').forEach(b =>
+  b.addEventListener('click', () => applyScene(b.dataset.scene)));
 const btnRotate = document.getElementById('btnRotate');
 const btnWave = document.getElementById('btnWave');
 const btnBubbles = document.getElementById('btnBubbles');
@@ -366,7 +614,13 @@ btnRotate.addEventListener('click', () => { autoRotate = !autoRotate; btnRotate.
 btnWave.addEventListener('click', () => { waving = !waving; btnWave.classList.toggle('on', waving); });
 btnBubbles.addEventListener('click', () => { bubblesG.visible = !bubblesG.visible; btnBubbles.classList.toggle('on', bubblesG.visible); });
 document.getElementById('btnReset').addEventListener('click', () => {
-  camera.position.set(3.4, 2.9, 6.4); controls.target.set(0, 1.75, 0);
+  camera.position.set(3.6, 3.0, 6.8); controls.target.set(0, 1.8, 0);
+});
+document.getElementById('btnPhoto').addEventListener('click', () => {
+  renderer.render(scene, camera);
+  const a = document.createElement('a');
+  a.href = renderer.domElement.toDataURL('image/png');
+  a.download = 'feiyu.png'; a.click();
 });
 addEventListener('resize', () => {
   camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
@@ -382,22 +636,23 @@ function animate(){
   const t = clock.elapsedTime;
 
   if (autoRotate) feiyu.rotation.y += dt * 0.6;
-  bodyG.position.y = Math.sin(t*2)*0.04;                       // 呼吸浮动
+  bodyG.position.y = Math.sin(t*2)*0.04;
   headG.rotation.y = Math.sin(t*0.6)*0.10;
   headG.rotation.x = Math.sin(t*1.3)*0.03;
-  tails.forEach(({ g, s }, i) => {                             // 双马尾摆动
-    g.rotation.x = Math.sin(t*2.2 + i*1.7)*0.10;
-    g.rotation.z = s * (0.06 + Math.sin(t*1.8 + i)*0.06);
+  hairSway.forEach((m, i) => {                                   // 长发摆动
+    m.rotation.z = Math.sin(t*2 + i*0.8)*0.07;
+    m.rotation.x = Math.sin(t*1.6 + i*0.6)*0.05;
   });
-  if (whaleTail && outfits.whale.visible)                      // 鲸鱼尾摆动
-    whaleTail.rotation.y = Math.sin(t*2.6)*0.35;
+  ahoge.rotation.z = -0.4 + Math.sin(t*3)*0.12;
+  if (maidTail && outfits.maid.visible) maidTail.rotation.y = Math.sin(t*2.4)*0.30;
+  if (whaleTail && outfits.whale.visible) whaleTail.rotation.y = Math.sin(t*2.6)*0.35;
 
-  waveT += ((waving ? 1 : 0) - waveT) * Math.min(dt*6, 1);      // 招手
-  arms.R.rotation.z = 0.12 + waveT * (-2.17 + Math.sin(t*9)*0.45);
+  waveT += ((waving ? 1 : 0) - waveT) * Math.min(dt*6, 1);        // 招手
+  arms.R.rotation.z = 0.10 + waveT * (-2.15 + Math.sin(t*9)*0.45);
   arms.R.rotation.x = waveT * -0.15;
   headG.rotation.z = waveT * Math.sin(t*4.5)*0.10;
 
-  if (bubblesG.visible) bubbles.forEach(b => {                 // 泡泡上升
+  if (bubblesG.visible) bubbles.forEach(b => {
     b.position.y += b.userData.speed * dt;
     if (b.position.y > 6.5) b.position.y = 0;
   });
@@ -410,6 +665,8 @@ function animate(){
     l.style.opacity = 0; setTimeout(() => l.remove(), 600);
   }
 }
+setOutfit('maid');
+applyScene('ocean');
 animate();
 </script>
 </body>
